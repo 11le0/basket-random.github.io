@@ -1,202 +1,347 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Portal</title>
+    <title>StarPlayer - Game Library</title>
     <style>
-        :root {
-            --bg-dark: #0a0b10;
-            --card-bg: #161b22;
-            --accent: #8b5cf6; /* Electric Purple */
-            --accent-hover: #a78bfa;
-            --text-main: #f8fafc;
-            --text-dim: #94a3b8;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Inter', system-ui, sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            overflow-x: hidden;
-        }
-
-        /* Header & Navigation */
-        header {
-            padding: 1.5rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(10, 11, 16, 0.8);
-            backdrop-filter: blur(12px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .logo { font-size: 1.5rem; font-weight: 800; color: var(--accent); text-transform: uppercase; cursor: pointer; }
-
-        /* Search Bar */
-        .search-container { padding: 2rem 5%; max-width: 1200px; margin: 0 auto; }
-        #gameSearch {
-            width: 100%;
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            border: 2px solid var(--card-bg);
-            background: var(--card-bg);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+            min-height: 100vh;
             color: white;
-            font-size: 1rem;
-            transition: 0.3s;
         }
-        #gameSearch:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 15px rgba(139, 92, 246, 0.3); }
 
-        /* Games Grid */
-        .games-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1.5rem;
-            padding: 0 5% 5rem;
-            max-width: 1200px;
+        /* Header */
+        header {
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid rgba(0, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .logo:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        h1 {
+            font-size: 2em;
+            background: linear-gradient(135deg, #00ffff, #0099ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Main content */
+        .container {
+            padding: 40px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
+        .search-bar {
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(0, 255, 255, 0.2);
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: #00ffff;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .search-bar input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Games grid */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
         .game-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 2rem 1rem;
-            text-align: center;
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.05), rgba(0, 153, 255, 0.05));
+            border: 2px solid rgba(0, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 1;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            aspect-ratio: 1/1;
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(0, 153, 255, 0.1));
+            opacity: 0;
+            transition: opacity 0.4s;
         }
 
         .game-card:hover {
-            transform: translateY(-8px);
-            background: #1c2128;
-            border-color: var(--accent);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transform: translateY(-10px) scale(1.02);
+            border-color: #00ffff;
+            box-shadow: 0 20px 40px rgba(0, 255, 255, 0.3),
+                        0 0 50px rgba(0, 255, 255, 0.2) inset;
         }
 
-        .game-card h3 { font-size: 1.1rem; margin-top: 10px; }
+        .game-card:hover::before {
+            opacity: 1;
+        }
 
-        /* Fullscreen Player Overlay */
-        #playerOverlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg-dark);
-            z-index: 1000;
+        .game-card h3 {
+            font-size: 1.5em;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s;
+        }
+
+        .game-card:hover h3 {
+            transform: scale(1.1);
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+        }
+
+        /* Game player page */
+        .game-player {
             display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #0f0f0f;
+            z-index: 1000;
+        }
+
+        .game-player.active {
+            display: flex;
             flex-direction: column;
         }
 
-        .player-nav {
-            padding: 1rem 2rem;
+        .player-header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            background: #161b22;
+            justify-content: space-between;
+            padding: 15px 30px;
+            background: rgba(0, 0, 0, 0.8);
+            border-bottom: 2px solid rgba(0, 255, 255, 0.2);
         }
 
-        iframe { flex-grow: 1; border: none; background: #000; }
+        .player-logo {
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .player-logo:hover {
+            transform: scale(1.1);
+        }
+
+        .player-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .player-title {
+            font-size: 1.3em;
+            color: #00ffff;
+        }
 
         .btn {
-            background: var(--accent);
-            color: white;
-            padding: 0.6rem 1.2rem;
-            border-radius: 8px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #00ffff, #0099ff);
             border: none;
-            cursor: pointer;
+            border-radius: 8px;
+            color: white;
             font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
         }
-        .btn:hover { background: var(--accent-hover); }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(0, 255, 255, 0.4);
+        }
+
+        .game-frame {
+            flex: 1;
+            border: none;
+            width: 100%;
+            height: 100%;
+            background: #000;
+        }
+
+        .no-games {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1.2em;
+        }
+
+        /* Loading animation */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #00ffff;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .loading::after {
+            content: '...';
+            animation: pulse 1.5s infinite;
+        }
     </style>
 </head>
 <body>
+    <!-- Main page -->
+    <div id="mainPage">
+        <header>
+            <img src="logo.png" 
+                 alt="StarPlayer Logo" 
+                 class="logo"
+                 onclick="location.reload()">
+            <h1>StarPlayer</h1>
+        </header>
 
-    <header>
-        <div class="logo" onclick="location.reload()">Game Portal</div>
-    </header>
+        <div class="container">
+            <div class="search-bar">
+                <input type="text" 
+                       id="searchInput" 
+                       placeholder="Search games..."
+                       oninput="filterGames()">
+            </div>
 
-    <div class="search-container">
-        <input type="text" id="gameSearch" placeholder="Search for a game..." onkeyup="filterGames()">
-    </div>
-
-    <div class="games-grid" id="gameGrid">
-        <!-- Games will be loaded here by JavaScript -->
-    </div>
-
-    <!-- The Hidden Game Player -->
-    <div id="playerOverlay">
-        <div class="player-nav">
-            <h2 id="currentTitle">Game Name</h2>
-            <div>
-                <button class="btn" onclick="toggleFullscreen()">Fullscreen</button>
-                <button class="btn" style="background: #ef4444;" onclick="closeGame()">Close</button>
+            <div id="gamesGrid" class="games-grid">
+                <div class="loading">Loading games</div>
             </div>
         </div>
-        <iframe id="gameFrame" src=""></iframe>
+    </div>
+
+    <!-- Game player page -->
+    <div id="gamePage" class="game-player">
+        <div class="player-header">
+            <img src="logo.png" 
+                 alt="StarPlayer Logo" 
+                 class="player-logo"
+                 onclick="goHome()">
+            <span class="player-title" id="gameTitle">Game Title</span>
+            <div class="player-controls">
+                <button class="btn" onclick="toggleFullscreen()">Fullscreen</button>
+                <button class="btn" onclick="goHome()">Home</button>
+            </div>
+        </div>
+        <iframe id="gameFrame" class="game-frame"></iframe>
     </div>
 
     <script>
-        // LIST YOUR GAMES HERE
-        // The ID must match the folder name in your /games/ folder
+        // MANUAL GAME LIST - Add your game folders here
         const games = [
-            { id: "2048", title: "2048 Classic" },
-            { id: "flappy-bird", title: "Flappy Bird" }
+            
+            "basketrandom",
+            
         ];
 
-        const grid = document.getElementById('gameGrid');
-
-        function loadGames(list) {
-            grid.innerHTML = '';
-            list.forEach(game => {
-                const card = document.createElement('div');
-                card.className = 'game-card';
-                card.innerHTML = `<h3>${game.title}</h3>`;
-                card.onclick = () => openGame(game.id, game.title);
-                grid.appendChild(card);
-            });
+        async function loadGames() {
+            displayGames();
         }
 
-        function openGame(id, title) {
-            const overlay = document.getElementById('playerOverlay');
-            const frame = document.getElementById('gameFrame');
-            document.getElementById('currentTitle').innerText = title;
+        function displayGames() {
+            const grid = document.getElementById('gamesGrid');
             
-            // Path to your game folder
-            frame.src = `./games/${id}/index.html`; 
-            overlay.style.display = 'flex';
-            document.body.style.overflow = 'hidden'; // Stop scrolling
-        }
+            if (games.length === 0) {
+                grid.innerHTML = '<div class="no-games">No games found. Add game folder names to the list in the code!</div>';
+                return;
+            }
 
-        function closeGame() {
-            const overlay = document.getElementById('playerOverlay');
-            const frame = document.getElementById('gameFrame');
-            frame.src = ""; // Stop game audio/logic
-            overlay.style.display = 'none';
-            document.body.style.overflow = 'auto';
+            grid.innerHTML = games.map(folder => `
+                <div class="game-card" onclick="playGame('${folder}', '${folder}')">
+                    <h3>${folder}</h3>
+                </div>
+            `).join('');
         }
 
         function filterGames() {
-            const term = document.getElementById('gameSearch').value.toLowerCase();
-            const filtered = games.filter(g => g.title.toLowerCase().includes(term));
-            loadGames(filtered);
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.game-card');
+            
+            cards.forEach(card => {
+                const name = card.textContent.toLowerCase();
+                card.style.display = name.includes(search) ? 'flex' : 'none';
+            });
+        }
+
+        function playGame(folder, name) {
+            document.getElementById('mainPage').style.display = 'none';
+            document.getElementById('gamePage').classList.add('active');
+            document.getElementById('gameTitle').textContent = name;
+            document.getElementById('gameFrame').src = `Games/${folder}/index.html`;
+        }
+
+        function goHome() {
+            document.getElementById('mainPage').style.display = 'block';
+            document.getElementById('gamePage').classList.remove('active');
+            document.getElementById('gameFrame').src = '';
         }
 
         function toggleFullscreen() {
             const frame = document.getElementById('gameFrame');
-            if (frame.requestFullscreen) frame.requestFullscreen();
+            if (!document.fullscreenElement) {
+                frame.requestFullscreen().catch(err => {
+                    alert('Fullscreen failed: ' + err.message);
+                });
+            } else {
+                document.exitFullscreen();
+            }
         }
 
-        // Initial Load
-        loadGames(games);
+        // Load games on page load
+        loadGames();
     </script>
 </body>
 </html>
