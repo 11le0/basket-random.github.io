@@ -57,14 +57,42 @@
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: 24px;
+      align-items: stretch;
     }
 
     .game-card {
+      position: relative;
       background-color: #111;
+      background-size: cover;
+      background-position: center;
       padding: 24px;
       border-radius: 16px;
       transition: background-color 0.2s ease;
       text-align: center;
+      overflow: hidden;
+    }
+
+    .game-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: inherit;
+      filter: blur(6px);
+      transform: scale(1.1);
+      z-index: 0;
+    }
+
+    .game-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      z-index: 1;
+    }
+
+    .game-card > * {
+      position: relative;
+      z-index: 2;
     }
 
     .game-card:hover {
@@ -104,7 +132,7 @@
 <body>
 
   <h1>Smelly Games</h1>
-  <p class="subtitle">A minimilistic game hub.</p>
+  <p class="subtitle">A collection of games. Weird. Fun. Yours.</p>
 
   <!-- Search Bar -->
   <div class="search-bar">
@@ -115,35 +143,9 @@
   <div class="games-grid" id="gamesGrid">
 
     <!-- Game Card -->
-    <div class="game-card" data-title="Escape Road 2">
-      <h2>Escape Road 2</h2>
-      <p></p>
-      <a href="games/escaperoad2.html" class="play-btn">Play</a>
-     
-      <div class="game-card" data-title="Drive Mad">
-      <h2>Drive Mad</h2>
-      <p></p>
-      <a href="games/drivemad.html" class="play-btn">Play</a>
-
-         <div class="game-card" data-title="Basket Random">
-      <h2>Basket Random</h2>
-      <p></p>
-      <a href="games/basketrandom.html" class="play-btn">Play</a>
-
-           <div class="game-card" data-title="Subway Surfers">
-      <h2>Subway Surfers</h2>
-      <p></p>
-      <a href="games/subwaysurfers.html" class="play-btn">Play</a>
-
-             <div class="game-card" data-title="Monkey Mart">
-      <h2>Monkey Mart</h2>
-      <p></p>
-      <a href="games/monkeymart.html" class="play-btn">Play</a>
-
-               <div class="game-card" data-title="baconmydie">
-      <h2>Bacon May Die</h2>
-      <p></p>
-      <a href="games/baconmaydie.html" class="play-btn">Play</a>
+    <div class="game-card" >
+      <h2>Snow Rider 3D</h2>
+      <a href="games/snowrider.html" class="play-btn">Play</a>
     </div>
 
     <!-- Copy & paste game cards as needed -->
@@ -158,9 +160,10 @@
       const query = searchInput.value.toLowerCase();
 
       gameCards.forEach(card => {
-        const title = card.dataset.title.toLowerCase();
+        const title = card.querySelector('h2').textContent.toLowerCase();
         card.style.display = title.includes(query) ? 'block' : 'none';
       });
+    });
     });
   </script>
 
