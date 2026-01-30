@@ -4,16 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Smelly Games</title>
-
-  <!-- Montserrat Font -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
 
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'Montserrat', sans-serif;
@@ -22,21 +16,11 @@
       padding: 32px;
     }
 
-    h1 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
+    h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 8px; }
+    .subtitle { color: #9ca3af; margin-bottom: 32px; }
 
-    .subtitle {
-      color: #9ca3af;
-      margin-bottom: 32px;
-    }
-
-    .search-bar {
-      margin-bottom: 32px;
-    }
-
+    /* Search Bar */
+    .search-bar { margin-bottom: 32px; }
     .search-bar input {
       width: 100%;
       max-width: 400px;
@@ -48,95 +32,46 @@
       font-weight: 600;
     }
 
-    .search-bar input:focus {
-      outline: none;
-      border-color: #404040;
-    }
-
+    /* THE FIX: CSS Grid for 4 columns */
     .games-grid {
-      width: 100%;
-      display: inline-flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
       gap: 24px;
-      align-items: stretch;
+      width: 100%;
     }
 
-    .game-card {
-      width: 260px;
-    }
-
-    .game-card {
-      flex: 0 0 260px;
-      max-width: 260px;
-    }
+    /* Responsive: 2 columns on tablets, 1 on phones */
+    @media (max-width: 1024px) { .games-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) { .games-grid { grid-template-columns: 1fr; } }
 
     .game-card {
       position: relative;
       background-color: #111;
-      background-size: cover;
-      background-position: center;
-      padding: 24px;
+      padding: 32px 24px;
       border-radius: 16px;
-      transition: background-color 0.2s ease;
       text-align: center;
-      overflow: hidden;
-    }
-
-    .game-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: inherit;
-      filter: blur(6px);
-      transform: scale(1.1);
-      z-index: 0;
-    }
-
-    .game-card::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.45);
-      z-index: 1;
-    }
-
-    .game-card > * {
-      position: relative;
-      z-index: 2;
+      border: 1px solid #262626;
+      transition: transform 0.2s ease;
     }
 
     .game-card:hover {
+      transform: translateY(-5px);
       background-color: #1a1a1a;
     }
 
-    .game-title {
-      font-size: 1.25rem;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-
-    .game-desc {
-      font-size: 0.9rem;
-      color: #9ca3af;
-      margin-bottom: 16px;
-    }
+    .game-card h2 { font-size: 1.25rem; margin-bottom: 16px; }
 
     .play-btn {
       display: inline-block;
-      margin-top: 20px;
-      padding: 10px 16px;
+      padding: 10px 24px;
       border-radius: 12px;
-      border: none;
       background-color: #f5f5f5;
       color: #0a0a0a;
       font-weight: 700;
       text-decoration: none;
-      cursor: pointer;
     }
 
-    .play-btn:hover {
-      background-color: #e5e5e5;
-    }
+    .play-btn:hover { background-color: #e5e5e5; }
   </style>
 </head>
 <body>
@@ -144,54 +79,32 @@
   <h1>Smelly Games</h1>
   <p class="subtitle">A collection of games. Weird. Fun. Yours.</p>
 
-  <!-- Search Bar -->
   <div class="search-bar">
     <input type="text" id="searchInput" placeholder="Search games..." />
   </div>
 
-  <!-- Games Grid -->
   <div class="games-grid" id="gamesGrid">
-
-    <!-- Game Card -->
-    <div class="game-card" >
-      <h2>Snow Rider 3D</h2>
-      <a href="games/snowrider.html" class="play-btn">Play</a>
-      <div class="game-card" >
-      <h2>Basket Random</h2>
-      <a href="games/basketrandom.html" class="play-btn">Play</a>
-        <div class="game-card" >
-      <h2>Monkey Mart</h2>
-      <a href="games/monkeymart.html" class="play-btn">Play</a>
-          <div class="game-card" >
-      <h2>Bacon May Die</h2>
-      <a href="games/baconmaydie.html" class="play-btn">Play</a>
-            <div class="game-card" >
-      <h2>Subway Surfers</h2>
-      <a href="games/subwaysurfers.html" class="play-btn">Play</a>
-              <div class="game-card" >
-      <h2>Drive Mad</h2>
-      <a href="games/drivemad.html" class="play-btn">Play</a>
-                <div class="game-card" >
-      <h2>BitLife</h2>
-      <a href="games/bitlife.html" class="play-btn">Play</a>
-    </div>
-
-    <!-- Copy & paste game cards as needed -->
-
+    <!-- Game Cards (Properly closed tags) -->
+    <div class="game-card"><h2>Snow Rider 3D</h2><a href="games/snowrider.html" class="play-btn">Play</a></div>
+    <div class="game-card"><h2>Basket Random</h2><a href="games/basketrandom.html" class="play-btn">Play</a></div>
+    <div class="game-card"><h2>Monkey Mart</h2><a href="games/monkeymart.html" class="play-btn">Play</a></div>
+    <div class="game-card"><h2>Bacon May Die</h2><a href="games/baconmaydie.html" class="play-btn">Play</a></div>
+    <div class="game-card"><h2>Subway Surfers</h2><a href="games/subwaysurfers.html" class="play-btn">Play</a></div>
+    <div class="game-card"><h2>Drive Mad</h2><a href="games/drivemad.html" class="play-btn">Play</a></div>
+    <div class="game-card"><h2>BitLife</h2><a href="games/bitlife.html" class="play-btn">Play</a></div>
   </div>
 
   <script>
     const searchInput = document.getElementById('searchInput');
-    const gameCards = document.querySelectorAll('.game-card');
+    const cards = document.querySelectorAll('.game-card');
 
     searchInput.addEventListener('input', () => {
       const query = searchInput.value.toLowerCase();
-
-      gameCards.forEach(card => {
+      cards.forEach(card => {
         const title = card.querySelector('h2').textContent.toLowerCase();
+        // Use 'grid' instead of 'block' to maintain layout
         card.style.display = title.includes(query) ? 'block' : 'none';
       });
-    });
     });
   </script>
 
