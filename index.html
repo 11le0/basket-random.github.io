@@ -54,10 +54,15 @@
     }
 
     .games-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      display: flex;
+      flex-wrap: wrap;
       gap: 24px;
       align-items: stretch;
+    }
+
+    .game-card {
+      flex: 0 0 260px;
+      max-width: 260px;
     }
 
     .game-card {
@@ -146,7 +151,7 @@
     <div class="game-card" >
       <h2>Snow Rider 3D</h2>
       <a href="games/snowrider.html" class="play-btn">Play</a>
-      <div class="game-card" >
+       <div class="game-card" >
       <h2>Basket Random</h2>
       <a href="games/basketrandom.html" class="play-btn">Play</a>
     </div>
