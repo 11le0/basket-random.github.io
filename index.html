@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Smelly Games</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com" rel="stylesheet">
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -19,7 +19,15 @@
     h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 8px; }
     .subtitle { color: #9ca3af; margin-bottom: 32px; }
 
-    .search-bar { margin-bottom: 32px; }
+    .header-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+      gap: 16px;
+    }
+
+    .search-bar { flex-grow: 1; }
     .search-bar input {
       width: 100%;
       max-width: 400px;
@@ -29,7 +37,21 @@
       background-color: #111;
       color: #f5f5f5;
       font-weight: 600;
+      outline: none;
     }
+
+    .random-btn {
+      padding: 12px 20px;
+      border-radius: 12px;
+      background-color: #4f46e5;
+      color: #f5f5f5;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+      transition: background 0.2s;
+    }
+    .random-btn:hover { background-color: #6366f1; }
 
     .games-grid {
       display: grid;
@@ -39,24 +61,28 @@
     }
 
     @media (max-width: 1024px) { .games-grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 600px) { .games-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 600px) { 
+      .games-grid { grid-template-columns: 1fr; }
+      .header-controls { flex-direction: column; align-items: stretch; }
+    }
 
     .game-card {
-      position: relative;
       background-color: #111;
       padding: 32px 24px;
       border-radius: 16px;
       text-align: center;
       border: 1px solid #262626;
-      transition: transform 0.2s ease;
+      transition: all 0.3s ease;
     }
 
     .game-card:hover {
       transform: translateY(-5px);
       background-color: #1a1a1a;
+      border-color: #4f46e5;
+      box-shadow: 0 10px 20px rgba(79, 70, 229, 0.1);
     }
 
-    .game-card h2 { font-size: 1.25rem; margin-bottom: 16px; }
+    .game-card h2 { font-size: 1.25rem; margin-bottom: 20px; }
 
     .play-btn {
       display: inline-block;
@@ -70,10 +96,9 @@
       border: none;
       font-family: inherit;
     }
+    .play-btn:hover { background-color: #fff; transform: scale(1.05); }
 
-    .play-btn:hover { background-color: #e5e5e5; }
-
-    /* Game View Overlay */
+    /* Overlay */
     #gameOverlay {
       display: none;
       position: fixed;
@@ -84,14 +109,8 @@
       background: #0a0a0a;
       z-index: 1000;
     }
+    #gameOverlay iframe { width: 100%; height: 100%; border: none; }
 
-    #gameOverlay iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-
-    /* Controls Container */
     .game-controls {
       position: absolute;
       top: 20px;
@@ -109,13 +128,7 @@
       border-radius: 10px;
       font-weight: 700;
       cursor: pointer;
-      font-family: inherit;
       backdrop-filter: blur(4px);
-    }
-
-    .control-btn:hover {
-      background: #f5f5f5;
-      color: #0a0a0a;
     }
   </style>
 </head>
@@ -125,11 +138,15 @@
     <h1>Smelly Games</h1>
     <p class="subtitle">A collection of games. Weird. Fun. Yours.</p>
 
-    <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="Search games..." />
+    <div class="header-controls">
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search games..." />
+      </div>
+      <button class="random-btn" onclick="playRandomGame()">Surprise Me!</button>
     </div>
 
     <div class="games-grid" id="gamesGrid">
+      <!-- Games are here, order doesn't matter, JS sorts them -->
       <div class="game-card"><h2>Snow Rider 3D</h2><button onclick="openGame('games/snowrider.html')" class="play-btn">Play</button></div>
       <div class="game-card"><h2>Basket Random</h2><button onclick="openGame('games/basketrandom.html')" class="play-btn">Play</button></div>
       <div class="game-card"><h2>Monkey Mart</h2><button onclick="openGame('games/monkeymart.html')" class="play-btn">Play</button></div>
@@ -137,12 +154,11 @@
       <div class="game-card"><h2>Subway Surfers</h2><button onclick="openGame('games/subwaysurfers.html')" class="play-btn">Play</button></div>
       <div class="game-card"><h2>Drive Mad</h2><button onclick="openGame('games/drivemad.html')" class="play-btn">Play</button></div>
       <div class="game-card"><h2>BitLife</h2><button onclick="openGame('games/bitlife.html')" class="play-btn">Play</button></div>
-        <div class="game-card"><h2>Poly Track</h2><button onclick="openGame('games/polytrack.html')" class="play-btn">Play</button></div>
+      <div class="game-card"><h2>Poly Track</h2><button onclick="openGame('games/polytrack.html')" class="play-btn">Play</button></div>
       <div class="game-card"><h2>Duck Life 4</h2><button onclick="openGame('games/ducklife4.html')" class="play-btn">Play</button></div>
     </div>
   </div>
 
-  <!-- Game Overlay Structure -->
   <div id="gameOverlay">
     <div class="game-controls">
       <button class="control-btn" onclick="toggleFullscreen()">Fullscreen</button>
@@ -153,11 +169,29 @@
 
   <script>
     const searchInput = document.getElementById('searchInput');
+    const gamesGrid = document.getElementById('gamesGrid');
     const cards = document.querySelectorAll('.game-card');
     const overlay = document.getElementById('gameOverlay');
     const gameFrame = document.getElementById('gameFrame');
 
-    // Search Logic
+    // --- New Function: Sort games alphabetically on load ---
+    function sortGamesAlphabetically() {
+      const allGames = Array.from(gamesGrid.children);
+      allGames.sort((a, b) => {
+        const titleA = a.querySelector('h2').textContent.toUpperCase();
+        const titleB = b.querySelector('h2').textContent.toUpperCase();
+        return (titleA < titleB) ? -1 : (titleA > titleB) ? 1 : 0;
+      });
+      
+      // Re-append sorted elements to the grid
+      allGames.forEach(card => gamesGrid.appendChild(card));
+    }
+
+    // Call the sort function immediately when the script runs
+    sortGamesAlphabetically();
+    // ----------------------------------------------------
+
+
     searchInput.addEventListener('input', () => {
       const query = searchInput.value.toLowerCase();
       cards.forEach(card => {
@@ -166,32 +200,34 @@
       });
     });
 
-    // Game Control Logic
     function openGame(url) {
       gameFrame.src = url;
       overlay.style.display = 'block';
-      document.body.style.overflow = 'hidden'; // Disable scrolling
+      document.body.style.overflow = 'hidden';
     }
 
     function closeGame() {
       gameFrame.src = '';
       overlay.style.display = 'none';
-      document.body.style.overflow = 'auto'; // Re-enable scrolling
-      if (document.fullscreenElement) {
-        document.exitFullscreen();
-      }
+      document.body.style.overflow = 'auto';
     }
 
     function toggleFullscreen() {
       if (!document.fullscreenElement) {
-        overlay.requestFullscreen().catch(err => {
-          alert(`Error attempting to enable full-screen mode: ${err.message}`);
-        });
+        overlay.requestFullscreen();
       } else {
         document.exitFullscreen();
       }
     }
-  </script>
 
+    function playRandomGame() {
+      const visibleCards = Array.from(cards).filter(c => c.style.display !== 'none');
+      if (visibleCards.length > 0) {
+        const randomCard = visibleCards[Math.floor(Math.random() * visibleCards.length)];
+        const url = randomCard.querySelector('button').getAttribute('onclick').match(/'([^']+)'/)[1];
+        openGame(url);
+      }
+    }
+  </script>
 </body>
 </html>
