@@ -1,37 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
+
+
+<!-- Ultimate Game Stash file--> 
+<!-- For the regularly updating doc go to https://docs.google.com/document/d/1_FmH3BlSBQI7FGgAQL59-ZPe8eCxs35wel6JUyVaG8Q/ -->
+
+
+
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <title>Basket Random - No Ads</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <style>
-        /* Ensures the game takes up the full browser window */
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background-color: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        /* Removes borders and scrollbars from the game window */
-        iframe {
-            width: 100vw;
-            height: 100vh;
-            border: none;
-            outline: none;
-        }
-    </style>
+	<meta charset="UTF-8">
+	<title>Basket Random</title>
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+	<meta name="generator" content="Construct 3">
+	<link rel="stylesheet"
+		href="https://cdn.jsdelivr.net/gh/bubbls/ruffle@1520d90d7b2994737acd8f7a633d018f63c22ca7/style.css"
+		type="text/css">
+	<script>
+		window.addEventListener("keydown", function(e) { // space and arrow keys if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) { e.preventDefault(); } }, false); 
+	</script>
 </head>
+
 <body>
-    <!-- This pulls a clean, ad-free build directly from a public repository -->
-    <iframe 
-        src="https://ubg98.github.io" 
-        allow="autoplay; fullscreen; keyboard" 
-        scrolling="no">
-    </iframe>
+	<div id="fb-root"></div>
+	<script
+		src="https://cdn.jsdelivr.net/gh/bubbls/ruffle@1520d90d7b2994737acd8f7a633d018f63c22ca7/box2d.js">
+	</script> <noscript>
+		<div id="notSupportedWrap">
+			<h2 id="notSupportedTitle">This content requires JavaScript</h2>
+			<p class="notSupportedMessage">JavaScript appears to be disabled. Please enable it to view this content.</p>
+		</div>
+	</noscript>
+	<script
+		src="https://cdn.jsdelivr.net/gh/bubbls/ruffle@1520d90d7b2994737acd8f7a633d018f63c22ca7/suppoortcheck.js">
+	</script>
+	<script
+		src="https://cdn.jsdelivr.net/gh/bubbls/ruffle@1520d90d7b2994737acd8f7a633d018f63c22ca7/offclient.js"
+		type="module"></script>
+	<script
+		src="https://cdn.jsdelivr.net/gh/bubbls/ruffle@1520d90d7b2994737acd8f7a633d018f63c22ca7/main.js"
+		type="module"></script>
+	<script
+		src="https://cdn.jsdelivr.net/gh/bubbls/ruffle@1520d90d7b2994737acd8f7a633d018f63c22ca7/registersw.js"
+		type="module"></script>
+	<script src="https://cdn.jsdelivr.net/gh/bubbls/ruffle@1520d90d7b2994737acd8f7a633d018f63c22ca7/api.js"></script>
 </body>
+
 </html>
