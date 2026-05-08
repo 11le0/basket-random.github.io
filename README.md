@@ -1,1 +1,5 @@
-ummm, this is gonna be a game webiste so just use this if you want i guess. just give me credit
+go to smelly-games.vercel.app
+
+not very good. dont go to the attached site. it doesn't work.
+
+not working on this anymore
